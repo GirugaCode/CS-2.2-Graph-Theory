@@ -1,27 +1,31 @@
 #!python3
-class Vertex(object):
+class Vertex():
+
     def __init__(self, vertex):
+        """ 
+        Initializes the vertex class
+        self.id -> Int
+        self.neighbors -> Dictionary
+        """
         self.id = vertex
         self.neighbors = {}
         
 class Graph:
     def __init__(self, verticies, edges):
-        """ initializes a graph object with an empty dictionary."""
+        """ 
+        Initializes a graph object with an empty dictionary.
+        self.edge_list -> List of the edges
+        self.num_verticies -> List of verticies
+        """
         # These represents the edges
         self.edge_list = edges
         self.num_verticies = verticies
-    
-    # def __str__(self):
-
-    #     return "# Vertices: {} \n# Edges: {} \nEdge List:\n{}".format(len(self.num_verticies), len(self.edge_list), self.get_edges())
-
-    # def get_edges(self):
-    #     return self.edge_list
 
 def main(text_file):
     verts = []
     edges = []
     graph = Graph(verts, edges)
+    # Opens and Parses through the text file to set up Graph
     with open(text_file, "r") as open_file:
         line_counter = 0
         for line in open_file:
@@ -34,14 +38,9 @@ def main(text_file):
                     raise ValueError("The text file has to many arguments for the edges.")
                 edges.append(edge)
             line_counter += 1
-        # text = open_file.read()
-        # clean_text = text.split("\n")
-        
-        # graph = Graph(clean_text[1].split(","), [edge.strip('()').split(',') for edge in clean_text[2:]])
-        # print(graph._edges_weight())
-        # print([edge.strip('()').split(',') for edge in clean_text[2:]])
-        print("# Verticies:", len(graph.edge_list))
-        print("# Edges:", len(graph.num_verticies))
+        print("# Verticies:", len(graph.num_verticies))
+        print("# Edges:", len(graph.edge_list))
+        # Iterates through the edge list and set all the edges with weights
         for fromVert, toVert, weight in graph.edge_list:
             print(f"({fromVert}, {toVert}, {weight})")
 
