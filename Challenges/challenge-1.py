@@ -1,45 +1,63 @@
 #!python3
-
+class Vertex(object):
+    def __init__(self, vertex):
+        self.id = vertex
+        self.neighbors = {}
+        
 class Graph:
     def __init__(self, verticies, edges):
-        self.verticies = verticies
-        self.edges = edges
-        # self.weight = weight
-    def __str__(self):
+        """ initializes a graph object with an empty dictionary."""
+        # These represents the edges
+        self.edge_list = edges
+        self.num_verticies = verticies
+    
+    # def __str__(self):
 
-        return "Vertices: {} \nEdges: {}".format(self.verticies, self.edges)
+    #     return "# Vertices: {} \n# Edges: {} \nEdge List:\n{}".format(len(self.num_verticies), len(self.edge_list), self.get_edges())
 
-    # def __repr__(self):
-    #     return "Vertices: %s\nEdges: %s" % (len(self.verticies), len(self.edges))
+    # def get_edges(self):
+    #     return self.edge_list
 
-    def _edges_weight(self):
-        # ['(1,2,10)', '(1,4,20)', '(2,3,50)', '(2,4,11)']
-
-        # weights = {
-        #     (0, 2): 4,
-        #     (0, 4): 60,
-        #     (0, 3): 23,
-        #     (2, 3): 4,
-        #     (3, 1): 10,
-        #     (4, 2): 15,
-        # }
-        edges_with_weight = self.edges
-        print(edges_with_weight)
-        
-
-
-
-
-def graph_text(text_file):
+def main(text_file):
+    verts = []
+    edges = []
+    graph = Graph(verts, edges)
     with open(text_file, "r") as open_file:
-        text = open_file.read()
-        clean_text = text.split("\n")
+        line_counter = 0
+        for line in open_file:
+            if line_counter == 1:
+                for key in line.strip().split(","):
+                    verts.append(key)
+            elif line_counter > 1:
+                edge = line.strip("()\n").split(",")
+                if len(edge) > 3:
+                    raise ValueError("The text file has to many arguments for the edges.")
+                edges.append(edge)
+            line_counter += 1
+        # text = open_file.read()
+        # clean_text = text.split("\n")
         
-        graph = Graph(clean_text[1].split(","), clean_text[2:])
-        print(graph._edges_weight())
-        # return Graph(clean_text[1].split(","), clean_text[2:])
+        # graph = Graph(clean_text[1].split(","), [edge.strip('()').split(',') for edge in clean_text[2:]])
+        # print(graph._edges_weight())
+        # print([edge.strip('()').split(',') for edge in clean_text[2:]])
+        print("# Verticies:", len(graph.edge_list))
+        print("# Edges:", len(graph.num_verticies))
+        for fromVert, toVert, weight in graph.edge_list:
+            print(f"({fromVert}, {toVert}, {weight})")
 
-print(graph_text("graph-data.txt"))
+        return graph
+
+
+import argparse
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Create a graph from text files")
+    parser.add_argument("filename", help="The name of the file to read from")
+    args = parser.parse_args()
+
+    if not args.filename:
+        raise Exception("You didn't provide a file argument!")
+    main(args.filename)
 
 
 
