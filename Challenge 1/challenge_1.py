@@ -1,6 +1,5 @@
 #!python3
-class Vertex():
-
+class Vertex:
     def __init__(self, vertex):
         """ 
         Initializes the vertex class
@@ -22,6 +21,10 @@ class Graph:
         self.num_verticies = verticies
 
 def main(text_file):
+    '''
+    Generate a graph from a file
+    text_file -> name of file to open with graph data
+    '''
     verts = []
     edges = []
     graph = Graph(verts, edges)
