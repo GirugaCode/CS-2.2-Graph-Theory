@@ -96,13 +96,11 @@ class Graph:
         while not queue.is_empty():
             vertex = queue.dequeue()
             if vertex.id == to_vert:
-                print('found')
                 path_found = True
                 break
 
             for neighbor in vertex.neighbors:
                 if neighbor.id not in visited:
-                    print(neighbor.id)
                     queue.enqueue(neighbor)
                     visited.add(neighbor.id)
                     neighbor.parent = vertex
@@ -112,9 +110,9 @@ class Graph:
             while vertex:
                 path.append(vertex.id)
                 vertex = vertex.parent
-            print(path[::-1])   
+            return path[::-1]
 
-        return visited
+        
 
     def __iter__(self):
         """iterate over the vertex objects in the
@@ -154,8 +152,11 @@ def main(text_file, from_vertex, to_vertex):
             graph.add_edge(edge[0], edge[1]) 
             # graph.add_edge(edge[1], edge[0])
 
-    print("BFS:", graph._bfs("1"))
-    graph.find_shortest_path(from_vertex, to_vertex)
+    # print("BFS:", graph._bfs("1"))
+    short_path = graph.find_shortest_path(from_vertex, to_vertex)
+
+    print(f"Verticies in shortest path: {short_path})")
+    print(f"Number of edges in shortest path: {len(short_path)}")
 
     return graph
 
