@@ -1,4 +1,5 @@
 #!python3
+from queue import LinkedQueue
 class Vertex:
     def __init__(self, vertex):
         """ 
@@ -36,9 +37,6 @@ class Graph:
         self.vert_list = {}
         self.num_verticies = 0
 
-    def __repr__(self):
-        return "<Test a:%s b:%s>" % (self.vert_list, self.num_verticies)
-
     def add_vertex(self, key):
         """
         Add a new vertex object to the graph with 
@@ -56,29 +54,67 @@ class Graph:
         if t not in self.vert_list:
             self.add_vertex(t)
         self.vert_list[f].add_neighbor(self.vert_list[t], cost)
+        self.vert_list[t].add_neighbor(self.vert_list[f], cost)
 
     def get_vertices(self):
         """return all the vertices in the graph"""
         return self.vert_list.keys()
 
-    def _bfs(self, from_vertex, to_vertex, visited=False):
-        # Start with an arbitrary vertex
-        # mark as visited and add to queue
-        queue = []
-        for vertex in queue:
-            queue.pop(vertex)
+    def get_edges(self, vertex):
+        dict_edges = self.vert_list[vertex].neighbors
+        return dict_edges
+
+
+
+    def _bfs(self, start_vertex):
+        # Keep track of the visited verticies
+        visited = set()
+        # Keep track of the nodes queued to be checked
+        queue = LinkedQueue()
+        queue.enqueue(start_vertex)
+
+        while not queue.is_empty():
+            vertex = queue.dequeue()
             for neighbor in self.vert_list[vertex].neighbors:
-                if not visited:
-                    self.vert_list[vertex].neighbors = vertex
-                    visited = True
-        queue.append(neighbor)
-        # For each vertex v in queue
-        #     Remove v from the queue
-        #     For each vertex u adjacent to v
-        #         If u has not been visited
-        #             Set parent of u to v
-        #             Mark u as visited
-        # Add u to the queue 
+                # print("Neighbor:", neighbor.id)
+                if neighbor.id not in visited:
+                    queue.enqueue(neighbor.id)
+                    visited.add(neighbor.id)
+        
+        return visited
+
+    def find_shortest_path(self, from_vert, to_vert):
+        visited = set()
+        vertex = self.vert_list[from_vert]
+        vertex.parent = None
+        queue = LinkedQueue()
+        queue.enqueue(vertex)
+        visited.add(vertex.id)
+
+        path_found = False
+
+        while not queue.is_empty():
+            vertex = queue.dequeue()
+            if vertex.id == to_vert:
+                print('found')
+                path_found = True
+                break
+
+            for neighbor in vertex.neighbors:
+                if neighbor.id not in visited:
+                    print(neighbor.id)
+                    queue.enqueue(neighbor)
+                    visited.add(neighbor.id)
+                    neighbor.parent = vertex
+
+        if path_found:
+            path = []
+            while vertex:
+                path.append(vertex.id)
+                vertex = vertex.parent
+            print(path[::-1])   
+
+        return visited
 
     def __iter__(self):
         """iterate over the vertex objects in the
@@ -87,9 +123,7 @@ class Graph:
         return iter(self.vert_list.values())
 
             
-
-
-def main(text_file):
+def main(text_file, from_vertex, to_vertex):
     '''
     Generate a graph from a file
     text_file -> name of file to open with graph data
@@ -118,14 +152,10 @@ def main(text_file):
         # Adds all undirectional edges to Graph
         for edge in edge_list:
             graph.add_edge(edge[0], edge[1]) 
-            graph.add_edge(edge[1], edge[0])
+            # graph.add_edge(edge[1], edge[0])
 
-    print("Verticies:", list(graph.get_vertices()))
-    
-    # Prints all the Edges
-    for key in graph:
-        for value in key.get_neighbors():
-            print(f"Edge:({key.get_id()}, {value.get_id()})")
+    print("BFS:", graph._bfs("1"))
+    graph.find_shortest_path(from_vertex, to_vertex)
 
     return graph
 
@@ -135,13 +165,13 @@ import argparse
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Create a graph from text files")
     parser.add_argument("filename", help="The name of the file to read from")
-    # parser.add_argument("from_vertex", help="The from vertex you want to start at")
-    # parser.add_argument("to_vertex", help="The to vertex you want to end at")
+    parser.add_argument("from_vertex", help="The from vertex you want to start at")
+    parser.add_argument("to_vertex", help="The to vertex you want to end at")
     args = parser.parse_args()
 
     if not args.filename:
         raise Exception("You didn't provide a file argument!")
-    main(args.filename)
+    main(args.filename, args.from_vertex, args.to_vertex)
 
 
 
