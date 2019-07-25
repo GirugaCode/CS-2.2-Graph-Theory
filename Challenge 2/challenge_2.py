@@ -28,13 +28,10 @@ class Graph:
     def __init__(self):
         """ 
         Initializes a graph object with an empty dictionary.
-        self.vert_list -> List of the edges
+        self.vert_dict -> List of the edges
         self.num_verticies -> List of verticies
         """
-        # These represents the edges
-        # self.vert_list = edges
-        # self.num_verticies = verticies
-        self.vert_list = {}
+        self.vert_dict = {}
         self.num_verticies = 0
 
     def add_vertex(self, key):
@@ -44,48 +41,47 @@ class Graph:
         """
         self.num_verticies += 1
         new_vertex = Vertex(key)
-        self.vert_list[key] = new_vertex
+        self.vert_dict[key] = new_vertex
         return new_vertex
 
     def add_edge(self, f, t, cost=0):
         """add an edge from vertex f to vertex t with a cost"""
-        if f not in self.vert_list:
+        if f not in self.vert_dict:
             self.add_vertex(f)
-        if t not in self.vert_list:
+        if t not in self.vert_dict:
             self.add_vertex(t)
-        self.vert_list[f].add_neighbor(self.vert_list[t], cost)
-        self.vert_list[t].add_neighbor(self.vert_list[f], cost)
+        self.vert_dict[f].add_neighbor(self.vert_dict[t], cost)
+        self.vert_dict[t].add_neighbor(self.vert_dict[f], cost)
 
     def get_vertices(self):
         """return all the vertices in the graph"""
-        return self.vert_list.keys()
+        return self.vert_dict.keys()
 
     def get_edges(self, vertex):
-        dict_edges = self.vert_list[vertex].neighbors
+        dict_edges = self.vert_dict[vertex].neighbors
         return dict_edges
 
 
 
     def _bfs(self, start_vertex):
-        # Keep track of the visited verticies
+        # Store the all visited verticies in a set
         visited = set()
-        # Keep track of the nodes queued to be checked
+        # Using Queues to traverse through the graph
         queue = LinkedQueue()
-        queue.enqueue(start_vertex)
+        queue.enqueue(start_vertex) # Start with enqueueing the starting vertex
 
-        while not queue.is_empty():
-            vertex = queue.dequeue()
-            for neighbor in self.vert_list[vertex].neighbors:
-                # print("Neighbor:", neighbor.id)
-                if neighbor.id not in visited:
-                    queue.enqueue(neighbor.id)
-                    visited.add(neighbor.id)
+        while not queue.is_empty(): # Loop as long as the queue contains verticies 
+            vertex = queue.dequeue() # Dequeue the vertex
+            for neighbor in self.vert_dict[vertex].neighbors: # Iterating through the dictionary of neighbors 
+                if neighbor.id not in visited: # Check all neighbors if they are not visited
+                    queue.enqueue(neighbor.id) # Enqueue the neighbors id that are not in visited
+                    visited.add(neighbor.id) # Add the neighbor that is not in visited
         
         return visited
 
     def find_shortest_path(self, from_vert, to_vert):
         visited = set()
-        vertex = self.vert_list[from_vert]
+        vertex = self.vert_dict[from_vert]
         vertex.parent = None
         queue = LinkedQueue()
         queue.enqueue(vertex)
@@ -118,7 +114,7 @@ class Graph:
         """iterate over the vertex objects in the
         graph, to use sytax: for v in g
         """
-        return iter(self.vert_list.values())
+        return iter(self.vert_dict.values())
 
             
 def main(text_file, from_vertex, to_vertex):
@@ -156,7 +152,7 @@ def main(text_file, from_vertex, to_vertex):
     short_path = graph.find_shortest_path(from_vertex, to_vertex)
 
     print(f"Verticies in shortest path: {short_path})")
-    print(f"Number of edges in shortest path: {len(short_path)}")
+    print(f"Number of edges in shortest path: {len(short_path) - 1}")
 
     return graph
 
