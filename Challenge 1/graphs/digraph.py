@@ -1,4 +1,7 @@
 #!python3
+"""
+Implementation of a directed Graph Class
+"""
         
 class Digraph:
     def __init__(self):

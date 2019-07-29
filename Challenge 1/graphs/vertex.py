@@ -1,4 +1,7 @@
 #!python3
+"""
+Implementation of a Vertex that can be used for a Graph
+"""
 
 class Vertex:
     def __init__(self, vertex):

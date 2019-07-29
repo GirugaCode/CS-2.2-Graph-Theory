@@ -1,4 +1,9 @@
 #!python3
+"""
+Outputs the Number of Verticies, Edges, and a list of Edges
+With or without weights
+"""
+
 import argparse
 from graphs.graph import Graph
 from utils.read_file import read_file

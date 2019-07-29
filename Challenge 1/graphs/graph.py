@@ -1,4 +1,7 @@
 #!python3
+"""
+Implementation of an undirected Graph Class
+"""
 from graphs.vertex import Vertex
 
 class Graph:
@@ -6,7 +9,8 @@ class Graph:
         """ 
         Initializes a graph object with an empty dictionary.
         self.edge_list -> List of the edges
-        self.num_verticies -> List of verticies
+        self.num_verticies -> Number of verticies
+        self.num_edges -> Number of edges
         """
         # These represents the edges
         self.vert_dict = {}

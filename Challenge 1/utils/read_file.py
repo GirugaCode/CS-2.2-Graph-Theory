@@ -1,4 +1,7 @@
 #!python3
+"""
+Reads the graph-data.txt file and stores the information
+"""
 
 from graphs.digraph import Digraph
 from graphs.graph import Graph
