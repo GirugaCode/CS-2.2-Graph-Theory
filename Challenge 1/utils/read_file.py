@@ -14,7 +14,7 @@ def read_file(text_file):
     with open(text_file, "r") as open_file:
         line_counter = 0
         for line in open_file:
-            if line_counter == 0:
+            if line_counter == 0: # Chooses either a Graph or Digraph
                 graph_type = line.strip()
                 if graph_type == "G":
                     graph = Graph()
@@ -22,10 +22,10 @@ def read_file(text_file):
                     graph = Digraph()
                 else:
                     raise ValueError("A Graph type has not been properly specified")
-            if line_counter == 1:
+            if line_counter == 1: # Adds all the Verticies from the txt file
                 for key in line.strip().split(","):
                     verts.append(key)
-            elif line_counter > 1:
+            elif line_counter > 1: # Add all the edges and checks if its weighted
                 edge = line.strip("()\n").split(",")
                 if is_weighted is None:
                     is_weighted = bool(len(edge) == 3)
@@ -37,6 +37,6 @@ def read_file(text_file):
                 if len(edge) > 3:
                     raise ValueError("To many arguments for the edges")
                 edges.append(edge)
-            line_counter += 1
+            line_counter += 1 # Traverses through the txt file line by line 
 
         return graph, verts, edges

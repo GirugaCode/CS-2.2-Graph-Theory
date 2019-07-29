@@ -9,20 +9,23 @@ def main(text_file):
     Generate a graph from a file
     text_file -> name of file to open with graph data
     '''
-
     graph, verts, edges = read_file(text_file)
 
-    print("# Verticies:", len(verts))
-    print("# Edges:", len(edges))
-    # Iterates through the edge list and set all the edges with weights
+    # Adds all the vertexes to Graph
+    for vertex in verts:
+        graph.add_vertex(vertex)
+
+    # Adds all undirectional edges to Graph
+    for edge in edges:
+        graph.add_edge(edge[0], edge[1]) 
+
+    print("# Verticies:", graph.num_verticies)
+    print("# Edges:", graph.num_edges)
+
     for fromVert, toVert, weight in edges:
         print(f"({fromVert}, {toVert}, {weight})")
 
     return graph
-
-
-
-
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Create a graph from text files")
