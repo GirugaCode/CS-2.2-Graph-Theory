@@ -61,8 +61,6 @@ class Graph:
         dict_edges = self.vert_dict[vertex].neighbors
         return dict_edges
 
-
-
     def _bfs(self, start_vertex):
         # Store the all visited verticies in a set
         visited = set()
@@ -146,7 +144,6 @@ def main(text_file, from_vertex, to_vertex):
         # Adds all undirectional edges to Graph
         for edge in edge_list:
             graph.add_edge(edge[0], edge[1]) 
-            # graph.add_edge(edge[1], edge[0])
 
     # print("BFS:", graph._bfs("1"))
     short_path = graph.find_shortest_path(from_vertex, to_vertex)
