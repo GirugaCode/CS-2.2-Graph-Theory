@@ -1,6 +1,6 @@
 #!python
 
-from linkedlist import LinkedList
+from data_structures.linkedlist import LinkedList
 
 
 # Implement LinkedQueue below, then change the assignment at the bottom
