@@ -6,7 +6,7 @@ With or without weights
 
 import argparse
 from graphs.graph import Graph
-from utils.read_file import read_file
+from challenge_one_utils.read_file import read_file
 
 
 def main(text_file):
