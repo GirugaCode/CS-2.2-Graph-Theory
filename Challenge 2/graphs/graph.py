@@ -58,33 +58,54 @@ class Graph:
         return visited
 
     def find_shortest_path(self, from_vert, to_vert):
-        visited = set()
-        vertex = self.vert_dict[from_vert]
-        vertex.parent = None
+        """
+        Finds the shortest path between two vertexes
+
+        Credit: Vincenzo Marcella (@C3NZ)
+        for helping me out with the code and logic to find the shortest path
+
+        Args:
+        from_vert -> Starting Vertex
+        to_vert -> Ending Vertex
+        
+        Returns:
+        A list of verticies the from_vert traversed to get to the to_vert
+        """
+
+        # Initializes the queue, verticies visited and the current vertex
         queue = LinkedQueue()
-        queue.enqueue(vertex)
-        visited.add(vertex.id)
+        visited = set()
+        curr_vertex = self.vert_dict[from_vert]
 
+        # Helps to start finding the path
         path_found = False
+        curr_vertex.parent = None
+        
+        # Enqueues the from_vertex and marks it as visited
+        queue.enqueue(curr_vertex)
+        visited.add(curr_vertex.id)
 
+        
         while not queue.is_empty():
-            vertex = queue.dequeue()
-            if vertex.id == to_vert:
+            curr_vertex = queue.dequeue()
+            if curr_vertex.id == to_vert:
                 path_found = True
-                break
+                break # Breaks out of the while loop once the path is found
 
-            for neighbor in vertex.neighbors:
+            # Traverse through the graph until the from_vertex and to_vertex is found
+            for neighbor in curr_vertex.neighbors: 
                 if neighbor.id not in visited:
                     queue.enqueue(neighbor)
                     visited.add(neighbor.id)
-                    neighbor.parent = vertex
+                    neighbor.parent = curr_vertex
 
+        # Once path_found is true add the shortest one in the list
         if path_found:
             path = []
-            while vertex:
-                path.append(vertex.id)
-                vertex = vertex.parent
-            return path[::-1]
+            while curr_vertex:
+                path.append(curr_vertex.id)
+                curr_vertex = curr_vertex.parent
+            return path[::-1] # Reverse the list because we are traversing backwards
 
         
 
