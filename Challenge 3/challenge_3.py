@@ -1,9 +1,11 @@
 #!python3
 import argparse
 from graphs.graph import Graph
-from challenge_two_utils.read_file import read_file
+from graphs.digraph import Digraph
+
+from challenge_three_utils.read_file import read_file
             
-def main(text_file, from_vertex, to_vertex):
+def main(text_file, from_vert, to_vert):
     '''
     Generate a graph from a file
     text_file -> name of file to open with graph data
@@ -18,11 +20,14 @@ def main(text_file, from_vertex, to_vertex):
     for edge in edges:
         graph.add_edge(edge[0], edge[1]) 
 
-    # print("BFS:", graph._bfs("1"))
-    short_path = graph.find_shortest_path(from_vertex, to_vertex)
+    dfs_path = graph._dfs_recursive_find_path(from_vert, to_vert)
 
-    print(f"Verticies in shortest path: {short_path}")
-    print(f"Number of edges in shortest path: {len(short_path) - 1}")
+    if dfs_path:
+        print(f"There exists a path between vertex {from_vert} and {to_vert}: TRUE")
+        print(f"Verticies in path: {dfs_path}")
+
+    else:
+        print(f"There exists a path between vertex {from_vert} and {to_vert}: FALSE")
 
     return graph
 
